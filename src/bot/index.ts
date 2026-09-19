@@ -4,6 +4,7 @@ import { config } from "../lib/config.js";
 import { chatFilter, errorHandler } from "./middleware/auth.js";
 import { handleReviewMessage, handleReviewCommand } from "./handlers/review.js";
 import { handleStartCommand, handleMdigestCommand, handleScountCommand } from "./handlers/commands.js";
+import { handleGoodreadsCommand } from "./handlers/goodreads.js";
 import {
   handleSubscribeCommand,
   handleSubscriptionToggle,
@@ -31,6 +32,7 @@ export function createBot() {
   bot.command("mdigest", handleMdigestCommand);
   bot.command("scount", handleScountCommand);
   bot.command("subscribe", handleSubscribeCommand);
+  bot.command("goodreads", handleGoodreadsCommand);
 
   // Callback handlers
   bot.action(TOGGLE_CALLBACK_DATA, handleSubscriptionToggle);
@@ -67,6 +69,7 @@ export async function startBot(bot: Telegraf) {
   await bot.telegram.setMyCommands([
     { command: "start", description: "Запустить бота и увидеть приветствие" },
     { command: "review", description: "Отметить сообщение как рецензию" },
+    { command: "goodreads", description: "Ссылки Goodreads: ответьте на рецензию" },
   ]);
 
   // Private chat commands (include subscription)
@@ -74,6 +77,7 @@ export async function startBot(bot: Telegraf) {
     [
       { command: "start", description: "Запустить бота" },
       { command: "subscribe", description: "Подписаться на уведомления о новых рецензиях" },
+      { command: "goodreads", description: "Ссылки Goodreads: ответьте на рецензию" },
     ],
     { scope: { type: "all_private_chats" } }
   );

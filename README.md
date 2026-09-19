@@ -116,6 +116,18 @@ Amazing portrayal of the American Dream...
 [Reply to this message with your review text]
 ```
 
+### Goodreads Links
+
+Reply to a saved review message with `/goodreads`. The bot immediately attempts to
+delete your command and posts Goodreads buttons in the same chat (visible to everyone),
+with one button per linked book. Links prefer the manually saved Goodreads URL,
+then ISBN lookup, then title/author search. ISBN and search may resolve to another edition.
+
+The response, including usage hints or lookup errors, is deleted after 30 minutes by
+an in-memory fire-and-forget timer. Restarting the bot loses pending deletion timers.
+The bot needs permission to delete messages; deletion failures are logged without
+preventing the response. Messages without a saved, book-linked review cannot be resolved.
+
 ### Bot Workflow
 
 1. Bot extracts book information using GPT-4o
