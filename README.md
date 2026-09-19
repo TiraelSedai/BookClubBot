@@ -116,6 +116,28 @@ Amazing portrayal of the American Dream...
 [Reply to this message with your review text]
 ```
 
+### Goodreads Links
+
+Reply to a saved review in a group with `/goodreads`. The command is registered as
+ephemeral. The bot replies with Goodreads buttons visible only to the requesting
+user and the bot, then immediately attempts to delete the command. There is one
+button per linked book. Links prefer the manually saved Goodreads URL, then ISBN
+lookup, then title/author search; ISBN and search may resolve to another edition.
+
+The reply uses the incoming command's `ephemeral_message_id` as its reply target.
+Telegram allows this response within 15 seconds of an ephemeral command.
+Requires Bot API 10.3 or newer; Telegraf's existing HTTP transport sends the new API fields.
+There is no administrator permission check. Command deletion is best-effort:
+failure is logged and does not prevent the reply. Ordinary incoming commands use
+ordinary request deletion; ephemeral commands use `deleteEphemeralMessage`.
+
+The response, including usage hints or lookup errors, is scheduled for best-effort
+deletion after 30 minutes using `deleteEphemeralMessage` and an unreferenced,
+in-memory timer. Restarting the bot loses pending timers. Telegram may expire
+ephemeral messages earlier and does not guarantee delivery or deletion while
+the user is offline. Send failures are logged with no public-message fallback.
+Messages without a saved, book-linked review cannot be resolved.
+
 ### Bot Workflow
 
 1. Bot extracts book information using GPT-4o
