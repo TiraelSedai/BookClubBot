@@ -66,10 +66,15 @@ export async function startBot(bot: Telegraf) {
 
   // Set bot commands for menu
   // Default commands (shown in all chats)
+  const goodreadsCommand = {
+    command: "goodreads",
+    description: "Ссылки Goodreads: ответьте на рецензию",
+    is_ephemeral: true,
+  };
   await bot.telegram.setMyCommands([
     { command: "start", description: "Запустить бота и увидеть приветствие" },
     { command: "review", description: "Отметить сообщение как рецензию" },
-    { command: "goodreads", description: "Ссылки Goodreads: ответьте на рецензию" },
+    goodreadsCommand,
   ]);
 
   // Private chat commands (include subscription)
@@ -77,7 +82,6 @@ export async function startBot(bot: Telegraf) {
     [
       { command: "start", description: "Запустить бота" },
       { command: "subscribe", description: "Подписаться на уведомления о новых рецензиях" },
-      { command: "goodreads", description: "Ссылки Goodreads: ответьте на рецензию" },
     ],
     { scope: { type: "all_private_chats" } }
   );
