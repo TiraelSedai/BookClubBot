@@ -9,11 +9,18 @@ import { createBot } from "../../src/bot/index.js";
 import { MockLLMClient } from "../../src/clients/llm/mock-llm-client.js";
 import { MockBookDataClient } from "../../src/clients/book-data/mock-book-data-client.js";
 import type { BotContext } from "../../src/bot/types/bot-context.js";
+import type * as ConfigModule from "../../src/lib/config.js";
 import { clearTestData } from "../helpers/test-db.js";
 import {
   loadBookFixture,
   loadReviewFixture,
 } from "../fixtures/helpers/fixture-loader.js";
+
+vi.mock("../../src/lib/config.js", async (importOriginal) => {
+  const actual = await importOriginal<typeof ConfigModule>();
+  const config = { ...actual.config, targetChatId: -1001234567890n };
+  return { ...actual, config, default: config };
+});
 
 vi.mock("../../src/services/notification.service.js", () => ({
   sendErrorNotification: vi.fn(),

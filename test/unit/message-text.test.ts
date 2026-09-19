@@ -72,8 +72,14 @@ describe("getMessageText", () => {
               type: "table",
               caption: "Scores",
               cells: [
-                [{ text: "Book" }, { text: "Score" }],
-                [{ text: "Dune" }, { text: "10" }],
+                [
+                  { text: "Book", align: "left", valign: "top" },
+                  { text: "Score", align: "left", valign: "top" },
+                ],
+                [
+                  { text: "Dune", align: "left", valign: "top" },
+                  { text: "10", align: "left", valign: "top" },
+                ],
               ],
             },
           ],
@@ -93,6 +99,32 @@ describe("getMessageText", () => {
 
     expect(getMessageText(message({ rich_message: richMessage }))).toBe(
       "More\n\n1. First\n\n2. Second\n\nScores\nBook\tScore\nDune\t10\n\nA hidden truth\n\n— Narrator\n\nCover\n\n© Artist\n\nGallery\n\nSource",
+    );
+  });
+
+  it("keeps empty and invisible table cells in their original columns", () => {
+    const richMessage = {
+      blocks: [{
+        type: "table",
+        cells: [
+          [
+            { text: "Book", align: "left", valign: "top" },
+            { text: "Positive", align: "left", valign: "top" },
+            { text: "Neutral", align: "left", valign: "top" },
+            { text: "Negative", align: "left", valign: "top" },
+          ],
+          [
+            { text: "1984", align: "left", valign: "top" },
+            { text: "", align: "left", valign: "top" },
+            { align: "left", valign: "top" },
+            { text: "Bleak", align: "left", valign: "top" },
+          ],
+        ],
+      }],
+    };
+
+    expect(getMessageText(message({ rich_message: richMessage }))).toBe(
+      "Book\tPositive\tNeutral\tNegative\n1984\t\t\tBleak",
     );
   });
 

@@ -77,7 +77,9 @@ function listItemText(value: unknown): string {
 }
 
 function tableRowText(value: unknown): string {
-  return arrayText(value, cell => isObject(cell) ? richText(cell.text) : "", "\t");
+  if (!Array.isArray(value)) return "";
+  // Empty and invisible cells still occupy a column in the table.
+  return value.map(cell => isObject(cell) ? richText(cell.text) : "").join("\t");
 }
 
 function blockText(value: unknown): string {
